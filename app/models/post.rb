@@ -3,4 +3,9 @@ class Post < ActiveRecord::Base
   # because foreign key is user_id we have to be explicit and say foreign key is user_id b/c we're
   # deviating from convention
   has_many :comments
+  has_many :post_categories
+  has_many :categories, through: :post_categories
+
+  validates :title, presence: true
+  validates :url, presence: true
 end

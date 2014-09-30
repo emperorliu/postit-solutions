@@ -7,8 +7,19 @@ PostitTemplate::Application.routes.draw do
   # post '/posts', to: 'posts#create'
   # get '/posts/:id/edit', to:'posts#edit'
   # patch '/posts/:id', to: 'posts#update'
+  
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  get '/logout', to: 'sessions#destroy'
+
+  get '/register', to: 'users#new'
+  resources :users, only: [:show, :create, :edit, :update]
+
   resources :posts, except: [:destroy] do
     resources :comments, only: [:create, :show]
+    member do
+      post :vote
+    end
   end
 
   resources :categories, only: [:create, :show, :new]

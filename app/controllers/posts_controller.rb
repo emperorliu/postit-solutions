@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:update, :show, :edit]
+  before_action :set_post, only: [:update, :show, :edit, :vote]
+  before_action :require_user, except: [:show, :index]
 
   def index
     @posts = Post.all
@@ -15,7 +16,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    @post.creator = User.first #TODO: change once we have authentication
+    @post.creator = current_user
     if @post.save
       flash[:notice] = "Your post was created."
       redirect_to posts_path
@@ -25,6 +26,17 @@ class PostsController < ApplicationController
   end
 
   def edit
+  end
+
+  def vote
+    @vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
+    if @vote.valid?
+      flash[:notice] = "Your vote was counted."
+    else 
+      flash[:error] = "Your vote was not counted."
+    end
+    
+    redirect_to :back
   end
 
   def update
@@ -43,4 +55,5 @@ class PostsController < ApplicationController
   def set_post
     @post = Post.find(params[:id])
   end
+
 end

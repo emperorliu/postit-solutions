@@ -16,9 +16,15 @@ PostitTemplate::Application.routes.draw do
   resources :users, only: [:show, :create, :edit, :update]
 
   resources :posts, except: [:destroy] do
-    resources :comments, only: [:create, :show]
+
     member do
       post :vote
+    end
+
+    resources :comments, only: [:create, :show] do
+      member do
+        post :vote
+      end
     end
   end
 

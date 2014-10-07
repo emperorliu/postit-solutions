@@ -9,6 +9,11 @@ class PostsController < ApplicationController
 
   def show
     @comment = Comment.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @post.comments }
+      format.xml {render xml: @post }
+    end
   end
 
   def new

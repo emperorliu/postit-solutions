@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Sluggable
+  include SluggableJeff1
 
   has_many :posts
   has_many :comments
@@ -13,5 +13,9 @@ class User < ActiveRecord::Base
 
   def admin?
     self.role == 'admin'
+  end
+
+  def moderator?
+    self.role == 'moderator'
   end
 end
